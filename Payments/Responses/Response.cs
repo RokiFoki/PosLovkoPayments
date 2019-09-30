@@ -6,6 +6,7 @@ namespace Payments.Responses
     public enum Code
     {
         Ok,
+        Error,
         CustomerDoesNotExit
     }
 
@@ -15,6 +16,7 @@ namespace Payments.Responses
         private readonly Dictionary<Code, String> CodesToText = new Dictionary<Code, string>()
         {
             { Responses.Code.Ok, "Ok" },
+            { Responses.Code.Error, "Error" },
             { Responses.Code.CustomerDoesNotExit, "CustomerDoesNotExit" },
         };
 
@@ -27,6 +29,11 @@ namespace Payments.Responses
         public static Response<T> Ok(T data)
         {
             return new Response<T>(Responses.Code.Ok, data);
+        }
+
+        public static Response<T> Error(T data)
+        {
+            return new Response<T>(Responses.Code.Error, data);
         }
 
         public static Response<T> CustomerDoesNotExist(T data)

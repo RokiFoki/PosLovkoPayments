@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments", "Payments\Payments.csproj", "{023C2CE0-C4A7-45FA-8073-6588B6344EF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments", "Payments\Payments.csproj", "{023C2CE0-C4A7-45FA-8073-6588B6344EF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDevelopmentHelper", "ConsoleDevelopmentHelper\ConsoleDevelopmentHelper.csproj", "{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{023C2CE0-C4A7-45FA-8073-6588B6344EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{023C2CE0-C4A7-45FA-8073-6588B6344EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{023C2CE0-C4A7-45FA-8073-6588B6344EF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

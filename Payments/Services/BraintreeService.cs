@@ -55,17 +55,26 @@ namespace Payments.Services
             return gateway.Customer.Delete(id);
         }
 
+        public bool DeletePaymentMethod(string customerId, string token)
+        {
+            if (DoesCustomerHavePaymentMethod(customerId, token))
+            {
+                gateway.PaymentMethod.Delete(token);
+                return true;
+            }
+
+            return false;
+        }
+
         public Result<PaymentMethod> CreatePaymentMethod(string customerId, string paymentMethodNonce)
         {
             if (DoesCustomerExist(customerId))
             {
-                var result = gateway.PaymentMethod.Create(new PaymentMethodRequest
+                return gateway.PaymentMethod.Create(new PaymentMethodRequest
                 {
                     CustomerId = customerId,
                     PaymentMethodNonce = paymentMethodNonce
                 });
-
-                return result;
             }
 
             return null;
@@ -89,6 +98,38 @@ namespace Payments.Services
             });
         }
 
+        public bool PaymentMethodMakeDefault(string customerId, string token)
+        {
+            if (DoesCustomerHavePaymentMethod(customerId, token))
+            {
+                var updateRequest = new PaymentMethodRequest
+                {
+                    Options = new PaymentMethodOptionsRequest
+                    {
+                        MakeDefault = true
+                    }
+                };
+
+                gateway.PaymentMethod.Update(token, updateRequest);
+
+                return true;
+            }
+
+            return false;            
+        }
+
+        private bool DoesCustomerHavePaymentMethod(string customerId, string token)
+        {
+            try
+            {
+                var paymentMethod = gateway.PaymentMethod.Find(token);
+                return paymentMethod.CustomerId == customerId;
+            } catch (NotFoundException)
+            {
+                return true;
+            }
+        }
+        
         private bool DoesCustomerExist(string customerId)
         {
             try
