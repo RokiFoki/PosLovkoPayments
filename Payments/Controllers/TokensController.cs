@@ -29,7 +29,7 @@ namespace Payments.Controllers
             {
                 return Response<string>.Ok(braintreeService.GenerateClientToken(id));
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 return Response<string>.CustomerDoesNotExist("");
             }

@@ -25,7 +25,7 @@ namespace Payments.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult RequestToken([ModelBinder(BinderType = typeof(DecryptBodyModelBinder<RequestTokenModel>))] RequestTokenModel request)
+        public ActionResult RequestToken(RequestTokenModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -41,6 +41,7 @@ namespace Payments.Controllers
             return BadRequest("Invalid Request");
         }
 
+        [ModelBinder(BinderType = typeof(DecryptBodyModelBinder<RequestTokenModel>))]
         public class RequestTokenModel
         {
             [JsonProperty("username")]

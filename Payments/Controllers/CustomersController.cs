@@ -6,6 +6,7 @@ using Braintree;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Payments.Helpers.ModelBinders;
 using Payments.Responses;
 using Payments.Services.Interfaces;
 
@@ -43,6 +44,8 @@ namespace Payments.Controllers
             return Response<Result<Customer>>.Ok(braintreeService.DeleteCustomer(id));
         }
     }
+
+    [ModelBinder(BinderType = typeof(DecryptBodyModelBinder<CustomerModel>))]
     public class CustomerModel
     {
         [JsonProperty("customerId")]

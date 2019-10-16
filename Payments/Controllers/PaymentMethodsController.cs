@@ -4,10 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Braintree;
+using Braintree.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Payments.Helpers.ModelBinders;
 using Payments.Responses;
 using Payments.Services.Interfaces;
 
@@ -28,7 +30,13 @@ namespace Payments.Controllers
         [HttpGet]
         public Response<CreditCard[]> Get(string customerId)
         {
-            return Response<CreditCard[]>.Ok(braintreeService.GetPaymentMethods(customerId));
+            try
+            {
+                return Response<CreditCard[]>.Ok(braintreeService.GetPaymentMethods(customerId));
+            } catch (NotFoundException)
+            {
+                return Response<CreditCard[]>.CustomerDoesNotExist(null);
+            }
         }
 
         [HttpGet("default")]
@@ -65,6 +73,7 @@ namespace Payments.Controllers
             return Response<string>.Error("");
         }
 
+        [ModelBinder(BinderType = typeof(DecryptBodyModelBinder<PaymentMethodModel>))]
         public class PaymentMethodModel
         {
             [Required]
