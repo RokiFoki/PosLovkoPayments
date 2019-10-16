@@ -12,6 +12,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Payments.Services;
 using Payments.Services.Interfaces;
+using System.Text;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.IO;
 
 namespace Payments
 {
@@ -27,13 +32,29 @@ namespace Payments
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            var key = Encoding.ASCII.GetBytes(Configuration["Secret"]);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.AddSingleton<IBraintreeService, BraintreeService>();
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -44,8 +65,22 @@ namespace Payments
                 app.UseHsts();
             }
 
+            app.UseRouting();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+        }
+
+        private Task ReadStream(Stream body)
+        {
+            throw new NotImplementedException();
         }
     }
 }

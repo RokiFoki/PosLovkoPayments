@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Braintree;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Payments.Responses;
 using Payments.Services.Interfaces;
 
 namespace Payments.Controllers
 {
+    [Authorize]
     [Route("api/[controller]", Name = "CustomersRoute")]
     [ApiController]
     public class CustomersController : ControllerBase
@@ -30,7 +33,7 @@ namespace Payments.Controllers
         [HttpPost]
         public Response<Result<Customer>> Post([FromBody] CustomerModel customer)
         {
-            return Response<Result<Customer>>.Ok(braintreeService.CreateCustomerIfDoesntExist(customer.customerId, customer.firstname, customer.lastname, customer.email));
+            return Response<Result<Customer>>.Ok(braintreeService.CreateCustomerIfDoesntExist(customer.CustomerId, customer.FirstName, customer.LastName, customer.Email));
         }
         
         // DELETE api/customers/5
@@ -42,9 +45,16 @@ namespace Payments.Controllers
     }
     public class CustomerModel
     {
-        public string customerId { get; set; }
-        public string firstname { get; set; }
-        public string lastname { get; set; }
-        public string email { get; set; }
+        [JsonProperty("customerId")]
+        public string CustomerId { get; set; }
+
+        [JsonProperty("firstname")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("lastname")]
+        public string LastName { get; set; }
+
+        [JsonProperty("email")]
+        public string Email { get; set; }
     }
 }

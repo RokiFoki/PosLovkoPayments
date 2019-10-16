@@ -4,21 +4,51 @@ using Payments.Services;
 using Payments.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ConsoleDevelopmentHelper
 {
     class Program
     {
+
+        private static byte[] GetPublicKey()
+        {
+            string fileData = System.IO.File.ReadAllText(@"C:\Users\rokok\source\repos\Payments\Payments\Keys\public3.pem");
+            string key = String.Join("", fileData.Split('\n')[1..^2]);
+            
+            return Convert.FromBase64String(key);
+        }
+
+        private static byte[] GetPrivateKey()
+        {
+            string fileData = System.IO.File.ReadAllText(@"C:\Users\rokok\source\repos\Payments\Payments\Keys\private3.pem");
+            string key = String.Join("", fileData.Split('\n')[1..^2]);
+            
+            return Convert.FromBase64String(key);
+        }
+
         static void Main(string[] args)
         {
-            IConfiguration configuration = new MockConfiguration();
-            configuration["Braintree:MerchantId"] = "rw7z4nmpv6nkrncc";
-            configuration["Braintree:PrivateKey"] = "b49e60782f6fc38ec1646995b1883fd8";
-            configuration["Braintree:PublicKey"] = "8hm6h2dybjr89s7s";
+            var input = "Hello world";
+            byte[] encryptedInput;
+            byte[] decryptedInput;
 
-            BraintreeService service = new BraintreeService(configuration);
-            var customer = service.GetCustomer("2");
-            Console.Write(customer);
+            using (RSA rsa = RSA.Create())
+            {
+                rsa.ImportSubjectPublicKeyInfo(GetPublicKey(), out int bytesRead);
+
+                encryptedInput = rsa.Encrypt(Encoding.UTF8.GetBytes(input), RSAEncryptionPadding.OaepSHA1);
+            }
+
+            using (RSA rsa = RSA.Create())
+            {
+                rsa.ImportEncryptedPkcs8PrivateKey(Convert.FromBase64String(""), GetPrivateKey(), out int bytesRead);
+
+                decryptedInput = rsa.Decrypt(encryptedInput, RSAEncryptionPadding.OaepSHA1);
+
+                Console.WriteLine(Encoding.UTF8.GetString(decryptedInput));
+            }
         }
     }
 }

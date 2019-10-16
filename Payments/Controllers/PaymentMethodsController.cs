@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Braintree;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Payments.Responses;
 using Payments.Services.Interfaces;
 
 namespace Payments.Controllers
 {
+    [Authorize]
     [Route("api/customers/{customerId}/[controller]")]
     [ApiController]
     public class PaymentMethodsController : ControllerBase
@@ -22,9 +26,9 @@ namespace Payments.Controllers
         }
 
         [HttpGet]
-        public Response<PaymentMethod[]> Get(string customerId)
+        public Response<CreditCard[]> Get(string customerId)
         {
-            return Response<PaymentMethod[]>.Ok(braintreeService.GetPaymentMethods(customerId));
+            return Response<CreditCard[]>.Ok(braintreeService.GetPaymentMethods(customerId));
         }
 
         [HttpGet("default")]
@@ -47,7 +51,7 @@ namespace Payments.Controllers
         [HttpPost]
         public Response<Result<PaymentMethod>> Post(string customerId, PaymentMethodModel model)
         {
-            return Response<Result<PaymentMethod>>.Ok(braintreeService.CreatePaymentMethod(customerId, model.nonce));
+            return Response<Result<PaymentMethod>>.Ok(braintreeService.CreatePaymentMethod(customerId, model.Nonce));
         }
 
         [HttpPut("{token}/makedefault")]
@@ -63,7 +67,9 @@ namespace Payments.Controllers
 
         public class PaymentMethodModel
         {
-            public string nonce { get; set; }
+            [Required]
+            [JsonProperty("nonce")]
+            public string Nonce { get; set; }
         }
 
     }

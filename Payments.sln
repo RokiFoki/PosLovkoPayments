@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments", "Payments\Payments.csproj", "{023C2CE0-C4A7-45FA-8073-6588B6344EF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDevelopmentHelper", "ConsoleDevelopmentHelper\ConsoleDevelopmentHelper.csproj", "{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDevelopmentHelper", "ConsoleDevelopmentHelper\ConsoleDevelopmentHelper.csproj", "{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

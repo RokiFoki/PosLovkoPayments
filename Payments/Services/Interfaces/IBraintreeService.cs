@@ -13,7 +13,7 @@ namespace Payments.Services.Interfaces
         Customer GetCustomer(string customerId);
         Result<Customer> DeleteCustomer(string id);
         PaymentMethod GetDefaultPaymentMethod(string customerId);
-        PaymentMethod[] GetPaymentMethods(string customerId);
+        CreditCard[] GetPaymentMethods(string customerId);
         string GenerateClientToken(string customerId);
         bool DeletePaymentMethod(string customerId, string token);
         bool PaymentMethodMakeDefault(string customerId, string token);

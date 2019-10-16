@@ -85,9 +85,9 @@ namespace Payments.Services
             return gateway.Customer.Find(customerId).DefaultPaymentMethod;
         }
 
-        public PaymentMethod[] GetPaymentMethods(string customerId)
+        public CreditCard[] GetPaymentMethods(string customerId)
         {
-            return gateway.Customer.Find(customerId).PaymentMethods;
+            return gateway.Customer.Find(customerId).CreditCards;
         }
 
         public string GenerateClientToken(string customerId)
