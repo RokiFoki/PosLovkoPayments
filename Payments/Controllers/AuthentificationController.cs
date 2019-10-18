@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Payments.Helpers.ModelBinders;
+using Payments.Responses;
 using Payments.Services.Interfaces;
 
 namespace Payments.Controllers
@@ -25,20 +26,20 @@ namespace Payments.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult RequestToken(RequestTokenModel request)
+        public ServerResponse RequestToken(RequestTokenModel request)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return ServerResponse.Error(null);
             }
 
             string token;
             if (_service.IsAuthenticated(request, out token))
             {
-                return Ok(token);
+                return ServerResponse.Ok(token);
             }
 
-            return BadRequest("Invalid Request");
+            return ServerResponse.Error(null);
         }
 
         [ModelBinder(BinderType = typeof(DecryptBodyModelBinder<RequestTokenModel>))]

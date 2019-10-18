@@ -28,49 +28,49 @@ namespace Payments.Controllers
         }
 
         [HttpGet]
-        public Response<CreditCard[]> Get(string customerId)
+        public ServerResponse Get(string customerId)
         {
             try
             {
-                return Response<CreditCard[]>.Ok(braintreeService.GetPaymentMethods(customerId));
+                return ServerResponse.Ok(braintreeService.GetPaymentMethods(customerId));
             } catch (NotFoundException)
             {
-                return Response<CreditCard[]>.CustomerDoesNotExist(null);
+                return ServerResponse.CustomerDoesNotExist(null);
             }
         }
 
         [HttpGet("default")]
-        public Response<PaymentMethod> GetDefault(string customerId)
+        public ServerResponse GetDefault(string customerId)
         {
-            return Response<PaymentMethod>.Ok(braintreeService.GetDefaultPaymentMethod(customerId));
+            return ServerResponse.Ok(braintreeService.GetDefaultPaymentMethod(customerId));
         }
 
         [HttpDelete("{token}")]
-        public Response<string> Delete(string customerId, string token)
+        public ServerResponse Delete(string customerId, string token)
         {
             if (braintreeService.DeletePaymentMethod(customerId, token))
             {
-                return Response<string>.Ok("");
+                return ServerResponse.Ok("");
             }
 
-            return Response<string>.Error("");
+            return ServerResponse.Error("");
         }
         
         [HttpPost]
-        public Response<Result<PaymentMethod>> Post(string customerId, PaymentMethodModel model)
+        public ServerResponse Post(string customerId, PaymentMethodModel model)
         {
-            return Response<Result<PaymentMethod>>.Ok(braintreeService.CreatePaymentMethod(customerId, model.Nonce));
+            return ServerResponse.Ok(braintreeService.CreatePaymentMethod(customerId, model.Nonce));
         }
 
         [HttpPut("{token}/makedefault")]
-        public Response<string> MakeDefault(string customerId, string token)
+        public ServerResponse MakeDefault(string customerId, string token)
         {
             if (braintreeService.PaymentMethodMakeDefault(customerId, token))
             {
-                return Response<string>.Ok("");
+                return ServerResponse.Ok("");
             }
 
-            return Response<string>.Error("");
+            return ServerResponse.Error("");
         }
 
         [ModelBinder(BinderType = typeof(DecryptBodyModelBinder<PaymentMethodModel>))]

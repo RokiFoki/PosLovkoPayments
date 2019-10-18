@@ -23,15 +23,15 @@ namespace Payments.Controllers
         }
 
         [HttpGet("{id}")]
-        public Response<string> Get(string id)
+        public ServerResponse Get(string id)
         {
             try
             {
-                return Response<string>.Ok(braintreeService.GenerateClientToken(id));
+                return ServerResponse.Ok(braintreeService.GenerateClientToken(id));
             }
             catch (ArgumentException)
             {
-                return Response<string>.CustomerDoesNotExist("");
+                return ServerResponse.CustomerDoesNotExist("");
             }
         }
     }

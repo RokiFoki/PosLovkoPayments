@@ -14,7 +14,7 @@ namespace ConsoleDevelopmentHelper
 
         private static byte[] GetPublicKey()
         {
-            string fileData = System.IO.File.ReadAllText(@"C:\Users\rokok\source\repos\Payments\Payments\Keys\public3.pem");
+            string fileData = System.IO.File.ReadAllText(@"C:\Users\rokok\source\repos\Payments\Payments\Keys\public.pem");
             string key = String.Join("", fileData.Split('\n')[1..^2]);
             
             return Convert.FromBase64String(key);
@@ -28,27 +28,49 @@ namespace ConsoleDevelopmentHelper
             return Convert.FromBase64String(key);
         }
 
+        private static string generateString(int length)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < length; i++) sb.Append('b');
+
+            return sb.ToString();
+        }
+
         static void Main(string[] args)
         {
-            var input = "Hello world";
+            var input = "1234567890";
             byte[] encryptedInput;
             byte[] decryptedInput;
 
-            using (RSA rsa = RSA.Create())
+            for (int i = 1; i < 2000; i++)
             {
-                rsa.ImportSubjectPublicKeyInfo(GetPublicKey(), out int bytesRead);
+                input = generateString(i);
 
-                encryptedInput = rsa.Encrypt(Encoding.UTF8.GetBytes(input), RSAEncryptionPadding.OaepSHA1);
+                Console.WriteLine(i);
+
+                using (RSA rsa = RSA.Create())
+                {
+                    rsa.ImportSubjectPublicKeyInfo(GetPublicKey(), out int bytesRead);
+
+                    Console.WriteLine(Encoding.UTF8.GetBytes(input).Length);
+                    Console.WriteLine(GetPublicKey().Length);
+                    Console.WriteLine(" ");
+
+                    encryptedInput = rsa.Encrypt(Encoding.UTF8.GetBytes(input), RSAEncryptionPadding.OaepSHA1);
+                }
             }
 
-            using (RSA rsa = RSA.Create())
-            {
-                rsa.ImportEncryptedPkcs8PrivateKey(Convert.FromBase64String(""), GetPrivateKey(), out int bytesRead);
+            
 
-                decryptedInput = rsa.Decrypt(encryptedInput, RSAEncryptionPadding.OaepSHA1);
+            //using (RSA rsa = RSA.Create())
+            //{
+            //    rsa.ImportEncryptedPkcs8PrivateKey(Convert.FromBase64String(""), GetPrivateKey(), out int bytesRead);
 
-                Console.WriteLine(Encoding.UTF8.GetString(decryptedInput));
-            }
+            //    decryptedInput = rsa.Decrypt(encryptedInput, RSAEncryptionPadding.OaepSHA1);
+
+            //    Console.WriteLine(Encoding.UTF8.GetString(decryptedInput));
+            //}
         }
     }
 }

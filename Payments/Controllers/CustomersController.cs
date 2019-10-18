@@ -25,23 +25,23 @@ namespace Payments.Controllers
         }
 
         [HttpGet("{id}")]
-        public Response<Customer> Get(string id)
+        public ServerResponse Get(string id)
         {
-            return Response<Customer>.Ok(braintreeService.GetCustomer(id));
+            return ServerResponse.Ok(braintreeService.GetCustomer(id));
         }
 
         // POST api/customers
         [HttpPost]
-        public Response<Result<Customer>> Post([FromBody] CustomerModel customer)
+        public ServerResponse Post([FromBody] CustomerModel customer)
         {
-            return Response<Result<Customer>>.Ok(braintreeService.CreateCustomerIfDoesntExist(customer.CustomerId, customer.FirstName, customer.LastName, customer.Email));
+            return ServerResponse.Ok(braintreeService.CreateCustomerIfDoesntExist(customer.CustomerId, customer.FirstName, customer.LastName, customer.Email));
         }
         
         // DELETE api/customers/5
         [HttpDelete("{id}")]
-        public Response<Result<Customer>> Delete(string id)
+        public ServerResponse Delete(string id)
         {
-            return Response<Result<Customer>>.Ok(braintreeService.DeleteCustomer(id));
+            return ServerResponse.Ok(braintreeService.DeleteCustomer(id));
         }
     }
 

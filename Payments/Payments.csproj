@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Keys\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
