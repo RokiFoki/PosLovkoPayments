@@ -4,6 +4,8 @@ using Payments.Services;
 using Payments.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -14,20 +16,13 @@ namespace ConsoleDevelopmentHelper
 
         private static byte[] GetPublicKey()
         {
-            string fileData = System.IO.File.ReadAllText(@"C:\Users\rokok\source\repos\Payments\Payments\Keys\public.pem");
+            string buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string fileData = File.ReadAllText(buildDir + @"public.pem");
             string key = String.Join("", fileData.Split('\n')[1..^2]);
             
             return Convert.FromBase64String(key);
         }
-
-        private static byte[] GetPrivateKey()
-        {
-            string fileData = System.IO.File.ReadAllText(@"C:\Users\rokok\source\repos\Payments\Payments\Keys\private3.pem");
-            string key = String.Join("", fileData.Split('\n')[1..^2]);
-            
-            return Convert.FromBase64String(key);
-        }
-
+        
         private static string generateString(int length)
         {
             StringBuilder sb = new StringBuilder();
@@ -60,17 +55,6 @@ namespace ConsoleDevelopmentHelper
                     encryptedInput = rsa.Encrypt(Encoding.UTF8.GetBytes(input), RSAEncryptionPadding.OaepSHA1);
                 }
             }
-
-            
-
-            //using (RSA rsa = RSA.Create())
-            //{
-            //    rsa.ImportEncryptedPkcs8PrivateKey(Convert.FromBase64String(""), GetPrivateKey(), out int bytesRead);
-
-            //    decryptedInput = rsa.Decrypt(encryptedInput, RSAEncryptionPadding.OaepSHA1);
-
-            //    Console.WriteLine(Encoding.UTF8.GetString(decryptedInput));
-            //}
         }
     }
 }

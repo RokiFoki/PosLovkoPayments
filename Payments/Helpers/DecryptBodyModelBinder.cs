@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,7 +59,8 @@ namespace Payments.Helpers.ModelBinders
 
         private static byte[] GetPrivateKey()
         {
-            string fileData = System.IO.File.ReadAllText(@"C:\Users\rokok\source\repos\Payments\Payments\Keys\private.pem");
+            string buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string fileData = File.ReadAllText(buildDir + @"\Keys\private.pem");
             string key = String.Join("", fileData.Split('\n')[1..^2]);
 
             return Convert.FromBase64String(key);

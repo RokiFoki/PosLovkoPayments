@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -101,7 +102,8 @@ namespace Payments.Responses
 
         private static byte[] GetPublicKey()
         {
-            string fileData = System.IO.File.ReadAllText(@"C:\Users\rokok\source\repos\Payments\Payments\Keys\public.pem");
+            string buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string fileData = File.ReadAllText(buildDir + @"\Keys\public.pem");
             string key = String.Join("", fileData.Split('\n')[1..^2]);
 
             return Convert.FromBase64String(key);
