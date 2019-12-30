@@ -73,6 +73,33 @@ namespace Payments.Controllers
             return ServerResponse.Error("");
         }
 
+        [AllowAnonymous]
+        [HttpPost("maketransaction")]
+        public ServerResponse MakeTransaction(string customerId, TransactionModel model)
+        {
+            var result = braintreeService.CreateTransaction(customerId, model.Amount, model.JobId);
+
+            if (result.IsSuccess())
+            {
+                return ServerResponse.Ok("");
+            } 
+            else
+            {
+                return ServerResponse.Error(result.Message);
+            }
+        }
+
+        [ModelBinder(BinderType = typeof(DecryptBodyModelBinder<TransactionModel>))]
+        public class TransactionModel
+        {
+            [Required]
+            [JsonProperty("amount")]
+            public decimal Amount { get; set; }
+            [Required]
+            [JsonProperty("jobId")]
+            public int JobId { get; set; }
+        }
+
         [ModelBinder(BinderType = typeof(DecryptBodyModelBinder<PaymentMethodModel>))]
         public class PaymentMethodModel
         {

@@ -13,48 +13,28 @@ namespace ConsoleDevelopmentHelper
 {
     class Program
     {
-
-        private static byte[] GetPublicKey()
-        {
-            string buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string fileData = File.ReadAllText(buildDir + @"public.pem");
-            string key = String.Join("", fileData.Split('\n')[1..^2]);
-            
-            return Convert.FromBase64String(key);
-        }
-        
-        private static string generateString(int length)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < length; i++) sb.Append('b');
-
-            return sb.ToString();
-        }
-
         static void Main(string[] args)
         {
-            var input = "1234567890";
-            byte[] encryptedInput;
-            byte[] decryptedInput;
+            var configuration = GetConfiguration();
 
-            for (int i = 1; i < 2000; i++)
-            {
-                input = generateString(i);
+            var bs = new BraintreeService(configuration);
 
-                Console.WriteLine(i);
+            var creditCards = bs.GetPaymentMethods("2");
+            var defaultCreditCard = bs.GetDefaultPaymentMethod("2");
 
-                using (RSA rsa = RSA.Create())
-                {
-                    rsa.ImportSubjectPublicKeyInfo(GetPublicKey(), out int bytesRead);
+            var result = bs.CreateTransaction("2", 20, 10);
+            Console.WriteLine("Done! {0} {1}", result.IsSuccess(), result.Message);
+        }
 
-                    Console.WriteLine(Encoding.UTF8.GetBytes(input).Length);
-                    Console.WriteLine(GetPublicKey().Length);
-                    Console.WriteLine(" ");
+        private static IConfiguration GetConfiguration()
+        {
+            var configuration = new MockConfiguration();
 
-                    encryptedInput = rsa.Encrypt(Encoding.UTF8.GetBytes(input), RSAEncryptionPadding.OaepSHA1);
-                }
-            }
+            configuration["Braintree:MerchantId"] = "rw7z4nmpv6nkrncc";
+            configuration["Braintree:PrivateKey"] = "b49e60782f6fc38ec1646995b1883fd8";
+            configuration["Braintree:PublicKey"] = "8hm6h2dybjr89s7s";
+
+            return configuration;
         }
     }
 }

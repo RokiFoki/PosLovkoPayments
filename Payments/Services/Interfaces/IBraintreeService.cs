@@ -17,5 +17,6 @@ namespace Payments.Services.Interfaces
         string GenerateClientToken(string customerId);
         bool DeletePaymentMethod(string customerId, string token);
         bool PaymentMethodMakeDefault(string customerId, string token);
+        Result<Transaction> CreateTransaction(string customerid, decimal amount, int jobId);
     }
 }

@@ -146,5 +146,23 @@ namespace Payments.Services
                 return false;
             }
         }
+
+        public Result<Transaction> CreateTransaction(string customerid, decimal amount, int jobId)
+        {
+            var request = new TransactionRequest
+            {
+                Amount = amount,
+                CustomerId = customerid,
+                Options = new TransactionOptionsRequest
+                {
+                    SubmitForSettlement = true
+                },
+                OrderId = jobId.ToString()
+            };
+
+            var result = gateway.Transaction.Sale(request);
+
+            return result;
+        }
     }
 }
