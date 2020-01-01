@@ -10,10 +10,8 @@ namespace GetXmlFromPEM
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(args);
-
-            var passwordArg = "T0pSecRit010120";
-            var filePathArg = "T0pSecRit010120";
+            var passwordArg = args[0];
+            var filePathArg = args[1];
 
             using (RSA rsa = RSA.Create())
             {

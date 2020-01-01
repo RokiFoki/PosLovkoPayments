@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GetXmlFromPEM": {
+      "commandName": "Project",
+      "commandLineArgs": "T0pSecRit010120 private.pem"
+    }
+  }
+}
