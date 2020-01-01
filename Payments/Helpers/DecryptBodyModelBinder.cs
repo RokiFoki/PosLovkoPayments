@@ -49,15 +49,8 @@ namespace Payments.Helpers.ModelBinders
         {
             using (RSA rsa = RSA.Create())
             {
-                var password = Convert.FromBase64String("");
-                var source = GetPrivateKey();
-                try
-                {
-                    rsa.ImportEncryptedPkcs8PrivateKey(password, source, out int bytesRead);
-                } catch(Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
+                var key = GetPrivateKey();   
+                rsa.FromXmlString(key);
 
                 var decryptedInput = rsa.Decrypt(Convert.FromBase64String(data), RSAEncryptionPadding.OaepSHA1);
 
@@ -65,13 +58,12 @@ namespace Payments.Helpers.ModelBinders
             }
         }
 
-        private static byte[] GetPrivateKey()
+        private static string GetPrivateKey()
         {
             string buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string fileData = File.ReadAllText(buildDir + @"\Keys\private.pem");
-            string key = String.Join("", fileData.Split('\n')[1..^2]);
-
-            return Convert.FromBase64String(key);
+            string key = File.ReadAllText(buildDir + @"\Keys\private.xml");
+            
+            return key;
         }
     }
 }

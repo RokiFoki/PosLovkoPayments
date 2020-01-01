@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payments", "Payments\Paymen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDevelopmentHelper", "ConsoleDevelopmentHelper\ConsoleDevelopmentHelper.csproj", "{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetXmlFromPEM", "GetXmlFromPEM\GetXmlFromPEM.csproj", "{CBBB13E9-DF99-4E6E-B958-258C7F30C1D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC1AD9DF-FBD3-4A06-A72A-D66A71CE5D46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBBB13E9-DF99-4E6E-B958-258C7F30C1D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBBB13E9-DF99-4E6E-B958-258C7F30C1D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBBB13E9-DF99-4E6E-B958-258C7F30C1D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBBB13E9-DF99-4E6E-B958-258C7F30C1D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
