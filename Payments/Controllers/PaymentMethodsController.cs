@@ -73,7 +73,6 @@ namespace Payments.Controllers
             return ServerResponse.Error("");
         }
 
-        [AllowAnonymous]
         [HttpPost("maketransaction")]
         public ServerResponse MakeTransaction(string customerId, TransactionModel model)
         {

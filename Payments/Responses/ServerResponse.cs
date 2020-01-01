@@ -108,5 +108,10 @@ namespace Payments.Responses
 
             return Convert.FromBase64String(key);
         }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

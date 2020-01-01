@@ -49,7 +49,15 @@ namespace Payments.Helpers.ModelBinders
         {
             using (RSA rsa = RSA.Create())
             {
-                rsa.ImportEncryptedPkcs8PrivateKey(Convert.FromBase64String(""), GetPrivateKey(), out int bytesRead);
+                var password = Convert.FromBase64String("");
+                var source = GetPrivateKey();
+                try
+                {
+                    rsa.ImportEncryptedPkcs8PrivateKey(password, source, out int bytesRead);
+                } catch(Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
 
                 var decryptedInput = rsa.Decrypt(Convert.FromBase64String(data), RSAEncryptionPadding.OaepSHA1);
 
