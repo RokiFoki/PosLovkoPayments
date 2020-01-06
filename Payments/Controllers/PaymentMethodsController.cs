@@ -76,12 +76,27 @@ namespace Payments.Controllers
         [HttpPost("maketransaction")]
         public ServerResponse MakeTransaction(string customerId, TransactionModel model)
         {
-            var result = braintreeService.CreateTransaction(customerId, model.Amount, model.JobId);
+            var result = braintreeService.CreateTransaction(customerId, model.Amount, model.OrderId);
 
             if (result.IsSuccess())
             {
                 return ServerResponse.Ok("");
             } 
+            else
+            {
+                return ServerResponse.Error(result.Message);
+            }
+        }
+
+        [HttpPost("{token}/maketransaction")]
+        public ServerResponse MakeTransaction(string customerId, string token, TransactionModel model)
+        {
+            var result = braintreeService.CreateTransaction(customerId, model.Amount, model.OrderId, token);
+
+            if (result.IsSuccess())
+            {
+                return ServerResponse.Ok("");
+            }
             else
             {
                 return ServerResponse.Error(result.Message);
@@ -95,8 +110,8 @@ namespace Payments.Controllers
             [JsonProperty("amount")]
             public decimal Amount { get; set; }
             [Required]
-            [JsonProperty("jobId")]
-            public int JobId { get; set; }
+            [JsonProperty("orderId")]
+            public string OrderId { get; set; }
         }
 
         [ModelBinder(BinderType = typeof(DecryptBodyModelBinder<PaymentMethodModel>))]

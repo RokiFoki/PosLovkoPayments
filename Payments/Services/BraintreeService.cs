@@ -147,7 +147,7 @@ namespace Payments.Services
             }
         }
 
-        public Result<Transaction> CreateTransaction(string customerid, decimal amount, int jobId)
+        public Result<Transaction> CreateTransaction(string customerid, decimal amount, string orderId)
         {
             var request = new TransactionRequest
             {
@@ -157,7 +157,26 @@ namespace Payments.Services
                 {
                     SubmitForSettlement = true
                 },
-                OrderId = jobId.ToString()
+                OrderId = orderId
+            };
+
+            var result = gateway.Transaction.Sale(request);
+
+            return result;
+        }
+
+        public Result<Transaction> CreateTransaction(string customerid, decimal amount, string orderId, string token)
+        {
+            var request = new TransactionRequest
+            {
+                Amount = amount,
+                CustomerId = customerid,
+                PaymentMethodToken = token,
+                Options = new TransactionOptionsRequest
+                {
+                    SubmitForSettlement = true
+                },
+                OrderId = orderId
             };
 
             var result = gateway.Transaction.Sale(request);
