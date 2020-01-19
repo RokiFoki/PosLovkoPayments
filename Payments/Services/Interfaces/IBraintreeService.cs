@@ -9,7 +9,7 @@ namespace Payments.Services.Interfaces
     public interface IBraintreeService
     {
         Result<Customer> CreateCustomerIfDoesntExist(string customerId, string firstname, string lastname, string email);
-        Result<PaymentMethod> CreatePaymentMethod(string customerId, string paymentMethodNonce);
+        Result<PaymentMethod> CreatePaymentMethod(string customerId, string paymentMethodNonce, bool makeDefault=false);
         Customer GetCustomer(string customerId);
         Result<Customer> DeleteCustomer(string id);
         PaymentMethod GetDefaultPaymentMethod(string customerId);

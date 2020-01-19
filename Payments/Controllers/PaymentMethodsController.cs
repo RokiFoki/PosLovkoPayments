@@ -59,7 +59,7 @@ namespace Payments.Controllers
         [HttpPost]
         public ServerResponse Post(string customerId, PaymentMethodModel model)
         {
-            return ServerResponse.Ok(braintreeService.CreatePaymentMethod(customerId, model.Nonce));
+            return ServerResponse.Ok(braintreeService.CreatePaymentMethod(customerId, model.Nonce, model.MakeDefault));
         }
 
         [HttpPut("{token}/makedefault")]
@@ -120,6 +120,9 @@ namespace Payments.Controllers
             [Required]
             [JsonProperty("nonce")]
             public string Nonce { get; set; }
+            
+            [JsonProperty("makeDefault")]
+            public bool MakeDefault { get; set; }
         }
 
     }

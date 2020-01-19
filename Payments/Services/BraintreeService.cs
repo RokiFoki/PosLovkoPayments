@@ -66,14 +66,18 @@ namespace Payments.Services
             return false;
         }
 
-        public Result<PaymentMethod> CreatePaymentMethod(string customerId, string paymentMethodNonce)
+        public Result<PaymentMethod> CreatePaymentMethod(string customerId, string  paymentMethodNonce, bool makeDefault=false)
         {
             if (DoesCustomerExist(customerId))
             {
                 return gateway.PaymentMethod.Create(new PaymentMethodRequest
                 {
                     CustomerId = customerId,
-                    PaymentMethodNonce = paymentMethodNonce
+                    PaymentMethodNonce = paymentMethodNonce,
+                    Options = new PaymentMethodOptionsRequest
+                    {
+                        MakeDefault = makeDefault
+                    }
                 });
             }
 
