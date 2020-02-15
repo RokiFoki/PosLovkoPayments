@@ -12,6 +12,11 @@ namespace GetXmlFromPEM
         {
             var passwordArg = args[0];
             var filePathArg = args[1];
+            string path = "";
+            if (args.Length > 2)
+            {
+                path = args[2];
+            }
 
             using (RSA rsa = RSA.Create())
             {
@@ -21,7 +26,7 @@ namespace GetXmlFromPEM
                 rsa.ImportEncryptedPkcs8PrivateKey(password, source, out int bytesRead);
                 var xml = rsa.ToXmlString(true);
 
-                File.WriteAllText("private.xml", xml);
+                File.WriteAllText(Path.Join(path, "private.xml"), xml);
             }
         }
 
